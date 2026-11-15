@@ -1,0 +1,1147 @@
+{
+  "name": "LocalOGlobal",
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {
+        "maxResults": 1
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0
+        },
+        "setupValidation": {
+          "version": 1,
+          "configuration": "7b7449c60331dd3",
+          "result": {
+            "valid": true,
+            "fields": []
+          }
+        },
+        "restore": {
+          "parameters": {}
+        },
+        "parameters": [
+          {
+            "name": "hook",
+            "type": "hook:gateway-webhook",
+            "label": "Webhook",
+            "required": true
+          },
+          {
+            "name": "maxResults",
+            "type": "number",
+            "label": "Maximum number of results"
+          }
+        ],
+        "interface": [
+          {
+            "name": "accion",
+            "type": "text"
+          },
+          {
+            "name": "comida",
+            "type": "text"
+          },
+          {
+            "name": "ropa",
+            "type": "text"
+          },
+          {
+            "name": "apps",
+            "type": "text"
+          },
+          {
+            "name": "criterio",
+            "type": "text"
+          },
+          {
+            "name": "origen",
+            "type": "text"
+          },
+          {
+            "name": "edad",
+            "type": "text"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "mapper": null,
+      "metadata": {
+        "designer": {
+          "x": 300,
+          "y": 0
+        }
+      },
+      "routes": [
+        {
+          "flow": [
+            {
+              "id": 3,
+              "module": "google-sheets:addRow",
+              "version": 2,
+              "parameters": {},
+              "filter": {
+                "name": "",
+                "conditions": [
+                  [
+                    {
+                      "a": "{{1.accion}}",
+                      "o": "text:equal",
+                      "b": "ae"
+                    }
+                  ]
+                ]
+              },
+              "mapper": {
+                "mode": "select",
+                "insertUnformatted": false,
+                "valueInputOption": "USER_ENTERED",
+                "insertDataOption": "INSERT_ROWS",
+                "from": "drive",
+                "includesHeaders": true,
+                "useColumnHeaders": false,
+                "values": {
+                  "0": "fecha = {{formatDate(now; quot; DD / MM / YYYY + HH:mm & quot; )}}",
+                  "1": "{{1.comida}}",
+                  "2": "ro{{1.ropa}}",
+                  "3": "{{1.apps}}",
+                  "4": "{{1.criterio}}",
+                  "5": "{{1.origen}}",
+                  "6": "{{1.edad}}"
+                }
+              },
+              "metadata": {
+                "designer": {
+                  "x": 600,
+                  "y": -150
+                },
+                "setupValidation": {
+                  "version": 1,
+                  "configuration": "7b1dab8c5bee5723",
+                  "result": {
+                    "valid": true,
+                    "fields": []
+                  }
+                },
+                "restore": {
+                  "parameters": {},
+                  "expect": {
+                    "mode": {
+                      "label": "Search by path"
+                    },
+                    "insertUnformatted": {
+                      "mode": "chose"
+                    },
+                    "valueInputOption": {
+                      "mode": "chose",
+                      "label": "User entered"
+                    },
+                    "insertDataOption": {
+                      "mode": "chose",
+                      "label": "Insert rows"
+                    },
+                    "from": {
+                      "label": "My Drive"
+                    },
+                    "includesHeaders": {
+                      "label": "Yes"
+                    },
+                    "useColumnHeaders": {
+                      "label": "No"
+                    }
+                  }
+                },
+                "parameters": [
+                  {
+                    "name": "__IMTCONN__",
+                    "type": "account:google",
+                    "label": "Connection",
+                    "required": true
+                  }
+                ],
+                "expect": [
+                  {
+                    "name": "mode",
+                    "type": "select",
+                    "label": "Search Method",
+                    "required": true,
+                    "validate": {
+                      "enum": [
+                        "select",
+                        "fromAll",
+                        "map"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "insertUnformatted",
+                    "type": "boolean",
+                    "label": "Unformatted",
+                    "required": true
+                  },
+                  {
+                    "name": "valueInputOption",
+                    "type": "select",
+                    "label": "Value input option",
+                    "required": true,
+                    "validate": {
+                      "enum": [
+                        "USER_ENTERED",
+                        "RAW"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "insertDataOption",
+                    "type": "select",
+                    "label": "Insert data option",
+                    "validate": {
+                      "enum": [
+                        "INSERT_ROWS",
+                        "OVERWRITE"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "from",
+                    "type": "select",
+                    "label": "Drive",
+                    "required": true,
+                    "validate": {
+                      "enum": [
+                        "drive",
+                        "share",
+                        "team"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "spreadsheetId",
+                    "type": "file",
+                    "label": "Spreadsheet Name",
+                    "required": true
+                  },
+                  {
+                    "name": "sheetId",
+                    "type": "select",
+                    "label": "Sheet Name",
+                    "required": true
+                  },
+                  {
+                    "name": "includesHeaders",
+                    "type": "select",
+                    "label": "Table contains headers",
+                    "required": true,
+                    "validate": {
+                      "enum": [
+                        true,
+                        false
+                      ]
+                    }
+                  },
+                  {
+                    "name": "useColumnHeaders",
+                    "type": "select",
+                    "label": "Use column headers as IDs of the columns",
+                    "required": true,
+                    "validate": {
+                      "enum": [
+                        true,
+                        false
+                      ]
+                    }
+                  },
+                  {
+                    "name": "values",
+                    "type": "collection",
+                    "label": "Values in columns",
+                    "metadata": [
+                      [
+                        [
+                          "fecha",
+                          "comida",
+                          "ropa",
+                          "apps",
+                          "criterio",
+                          "origen",
+                          "edad"
+                        ]
+                      ]
+                    ],
+                    "spec": [
+                      {
+                        "name": "0",
+                        "type": "text",
+                        "label": "fecha (A)"
+                      },
+                      {
+                        "name": "1",
+                        "type": "text",
+                        "label": "comida (B)"
+                      },
+                      {
+                        "name": "2",
+                        "type": "text",
+                        "label": "ropa (C)"
+                      },
+                      {
+                        "name": "3",
+                        "type": "text",
+                        "label": "apps (D)"
+                      },
+                      {
+                        "name": "4",
+                        "type": "text",
+                        "label": "criterio (E)"
+                      },
+                      {
+                        "name": "5",
+                        "type": "text",
+                        "label": "origen (F)"
+                      },
+                      {
+                        "name": "6",
+                        "type": "text",
+                        "label": "edad (G)"
+                      },
+                      {
+                        "name": "7",
+                        "type": "text",
+                        "label": "(H)"
+                      },
+                      {
+                        "name": "8",
+                        "type": "text",
+                        "label": "(I)"
+                      },
+                      {
+                        "name": "9",
+                        "type": "text",
+                        "label": "(J)"
+                      },
+                      {
+                        "name": "10",
+                        "type": "text",
+                        "label": "(K)"
+                      },
+                      {
+                        "name": "11",
+                        "type": "text",
+                        "label": "(L)"
+                      },
+                      {
+                        "name": "12",
+                        "type": "text",
+                        "label": "(M)"
+                      },
+                      {
+                        "name": "13",
+                        "type": "text",
+                        "label": "(N)"
+                      },
+                      {
+                        "name": "14",
+                        "type": "text",
+                        "label": "(O)"
+                      },
+                      {
+                        "name": "15",
+                        "type": "text",
+                        "label": "(P)"
+                      },
+                      {
+                        "name": "16",
+                        "type": "text",
+                        "label": "(Q)"
+                      },
+                      {
+                        "name": "17",
+                        "type": "text",
+                        "label": "(R)"
+                      },
+                      {
+                        "name": "18",
+                        "type": "text",
+                        "label": "(S)"
+                      },
+                      {
+                        "name": "19",
+                        "type": "text",
+                        "label": "(T)"
+                      },
+                      {
+                        "name": "20",
+                        "type": "text",
+                        "label": "(U)"
+                      },
+                      {
+                        "name": "21",
+                        "type": "text",
+                        "label": "(V)"
+                      },
+                      {
+                        "name": "22",
+                        "type": "text",
+                        "label": "(W)"
+                      },
+                      {
+                        "name": "23",
+                        "type": "text",
+                        "label": "(X)"
+                      },
+                      {
+                        "name": "24",
+                        "type": "text",
+                        "label": "(Y)"
+                      },
+                      {
+                        "name": "25",
+                        "type": "text",
+                        "label": "(Z)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "id": 5,
+              "module": "gateway:WebhookRespond",
+              "version": 1,
+              "parameters": {},
+              "mapper": {
+                "status": "200",
+                "body": "Respuesta registrada. Gracias\r\npor participar.,",
+                "headers": []
+              },
+              "metadata": {
+                "designer": {
+                  "x": 900,
+                  "y": -150
+                },
+                "setupValidation": {
+                  "version": 1,
+                  "configuration": "204097523016c973",
+                  "result": {
+                    "valid": true,
+                    "fields": []
+                  }
+                },
+                "restore": {
+                  "expect": {
+                    "headers": {
+                      "mode": "chose"
+                    }
+                  }
+                },
+                "expect": [
+                  {
+                    "name": "status",
+                    "type": "uinteger",
+                    "label": "Status",
+                    "validate": {
+                      "min": 100
+                    },
+                    "required": true
+                  },
+                  {
+                    "name": "body",
+                    "type": "any",
+                    "label": "Body"
+                  },
+                  {
+                    "name": "headers",
+                    "type": "array",
+                    "label": "Custom headers",
+                    "validate": {
+                      "maxItems": 16
+                    },
+                    "spec": [
+                      {
+                        "name": "key",
+                        "label": "Key",
+                        "type": "text",
+                        "required": true,
+                        "validate": {
+                          "max": 256
+                        }
+                      },
+                      {
+                        "name": "value",
+                        "label": "Value",
+                        "type": "text",
+                        "required": true,
+                        "validate": {
+                          "max": 4096
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 4,
+              "module": "google-sheets:addRow",
+              "version": 2,
+              "parameters": {},
+              "mapper": {
+                "mode": "select",
+                "insertUnformatted": false,
+                "valueInputOption": "USER_ENTERED",
+                "insertDataOption": "INSERT_ROWS",
+                "from": "drive",
+                "includesHeaders": true,
+                "useColumnHeaders": false,
+                "values": {}
+              },
+              "metadata": {
+                "designer": {
+                  "x": 600,
+                  "y": 150
+                },
+                "setupValidation": {
+                  "version": 1,
+                  "configuration": "d1489ab8d4e1efa3",
+                  "result": {
+                    "valid": true,
+                    "fields": []
+                  }
+                },
+                "restore": {
+                  "parameters": {},
+                  "expect": {
+                    "mode": {
+                      "label": "Search by path"
+                    },
+                    "insertUnformatted": {
+                      "mode": "chose"
+                    },
+                    "valueInputOption": {
+                      "mode": "chose",
+                      "label": "User entered"
+                    },
+                    "insertDataOption": {
+                      "mode": "chose",
+                      "label": "Insert rows"
+                    },
+                    "from": {
+                      "label": "My Drive"
+                    },
+                    "includesHeaders": {
+                      "label": "Yes"
+                    },
+                    "useColumnHeaders": {
+                      "label": "No"
+                    }
+                  }
+                },
+                "parameters": [
+                  {
+                    "name": "__IMTCONN__",
+                    "type": "account:google",
+                    "label": "Connection",
+                    "required": true
+                  }
+                ],
+                "expect": [
+                  {
+                    "name": "mode",
+                    "type": "select",
+                    "label": "Search Method",
+                    "required": true,
+                    "validate": {
+                      "enum": [
+                        "select",
+                        "fromAll",
+                        "map"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "insertUnformatted",
+                    "type": "boolean",
+                    "label": "Unformatted",
+                    "required": true
+                  },
+                  {
+                    "name": "valueInputOption",
+                    "type": "select",
+                    "label": "Value input option",
+                    "required": true,
+                    "validate": {
+                      "enum": [
+                        "USER_ENTERED",
+                        "RAW"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "insertDataOption",
+                    "type": "select",
+                    "label": "Insert data option",
+                    "validate": {
+                      "enum": [
+                        "INSERT_ROWS",
+                        "OVERWRITE"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "from",
+                    "type": "select",
+                    "label": "Drive",
+                    "required": true,
+                    "validate": {
+                      "enum": [
+                        "drive",
+                        "share",
+                        "team"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "spreadsheetId",
+                    "type": "file",
+                    "label": "Spreadsheet Name",
+                    "required": true
+                  },
+                  {
+                    "name": "sheetId",
+                    "type": "select",
+                    "label": "Sheet Name",
+                    "required": true
+                  },
+                  {
+                    "name": "includesHeaders",
+                    "type": "select",
+                    "label": "Table contains headers",
+                    "required": true,
+                    "validate": {
+                      "enum": [
+                        true,
+                        false
+                      ]
+                    }
+                  },
+                  {
+                    "name": "useColumnHeaders",
+                    "type": "select",
+                    "label": "Use column headers as IDs of the columns",
+                    "required": true,
+                    "validate": {
+                      "enum": [
+                        true,
+                        false
+                      ]
+                    }
+                  },
+                  {
+                    "name": "values",
+                    "type": "collection",
+                    "label": "Values in columns",
+                    "metadata": [
+                      [
+                        [
+                          "fecha",
+                          "comida",
+                          "ropa",
+                          "apps",
+                          "criterio",
+                          "origen",
+                          "edad"
+                        ]
+                      ]
+                    ],
+                    "spec": [
+                      {
+                        "name": "0",
+                        "type": "text",
+                        "label": "fecha (A)"
+                      },
+                      {
+                        "name": "1",
+                        "type": "text",
+                        "label": "comida (B)"
+                      },
+                      {
+                        "name": "2",
+                        "type": "text",
+                        "label": "ropa (C)"
+                      },
+                      {
+                        "name": "3",
+                        "type": "text",
+                        "label": "apps (D)"
+                      },
+                      {
+                        "name": "4",
+                        "type": "text",
+                        "label": "criterio (E)"
+                      },
+                      {
+                        "name": "5",
+                        "type": "text",
+                        "label": "origen (F)"
+                      },
+                      {
+                        "name": "6",
+                        "type": "text",
+                        "label": "edad (G)"
+                      },
+                      {
+                        "name": "7",
+                        "type": "text",
+                        "label": "(H)"
+                      },
+                      {
+                        "name": "8",
+                        "type": "text",
+                        "label": "(I)"
+                      },
+                      {
+                        "name": "9",
+                        "type": "text",
+                        "label": "(J)"
+                      },
+                      {
+                        "name": "10",
+                        "type": "text",
+                        "label": "(K)"
+                      },
+                      {
+                        "name": "11",
+                        "type": "text",
+                        "label": "(L)"
+                      },
+                      {
+                        "name": "12",
+                        "type": "text",
+                        "label": "(M)"
+                      },
+                      {
+                        "name": "13",
+                        "type": "text",
+                        "label": "(N)"
+                      },
+                      {
+                        "name": "14",
+                        "type": "text",
+                        "label": "(O)"
+                      },
+                      {
+                        "name": "15",
+                        "type": "text",
+                        "label": "(P)"
+                      },
+                      {
+                        "name": "16",
+                        "type": "text",
+                        "label": "(Q)"
+                      },
+                      {
+                        "name": "17",
+                        "type": "text",
+                        "label": "(R)"
+                      },
+                      {
+                        "name": "18",
+                        "type": "text",
+                        "label": "(S)"
+                      },
+                      {
+                        "name": "19",
+                        "type": "text",
+                        "label": "(T)"
+                      },
+                      {
+                        "name": "20",
+                        "type": "text",
+                        "label": "(U)"
+                      },
+                      {
+                        "name": "21",
+                        "type": "text",
+                        "label": "(V)"
+                      },
+                      {
+                        "name": "22",
+                        "type": "text",
+                        "label": "(W)"
+                      },
+                      {
+                        "name": "23",
+                        "type": "text",
+                        "label": "(X)"
+                      },
+                      {
+                        "name": "24",
+                        "type": "text",
+                        "label": "(Y)"
+                      },
+                      {
+                        "name": "25",
+                        "type": "text",
+                        "label": "(Z)"
+                      }
+                    ]
+                  }
+                ],
+                "advanced": true
+              }
+            },
+            {
+              "id": 7,
+              "module": "util:TextAggregator",
+              "version": 1,
+              "parameters": {
+                "rowSeparator": "",
+                "feeder": 4
+              },
+              "mapper": {
+                "value": "{{1.comida}}{{1.ropa}}{{1.apps}}{{1.criterio}}{{1.origen}}{{1.edad}}"
+              },
+              "metadata": {
+                "designer": {
+                  "x": 900,
+                  "y": 150
+                },
+                "setupValidation": {
+                  "version": 1,
+                  "configuration": "dae3514270c44a70",
+                  "result": {
+                    "valid": true,
+                    "fields": []
+                  }
+                },
+                "restore": {
+                  "parameters": {
+                    "rowSeparator": {
+                      "label": "Empty"
+                    }
+                  },
+                  "extra": {
+                    "feeder": {
+                      "label": "Google Sheets - Add a Row [4]"
+                    }
+                  }
+                },
+                "parameters": [
+                  {
+                    "name": "rowSeparator",
+                    "type": "select",
+                    "label": "Row separator",
+                    "validate": {
+                      "enum": [
+                        "\n",
+                        "\t",
+                        "other"
+                      ]
+                    }
+                  }
+                ],
+                "expect": [
+                  {
+                    "name": "value",
+                    "type": "text",
+                    "label": "Text"
+                  }
+                ]
+              }
+            },
+            {
+              "id": 8,
+              "module": "ai-local-agent:RunLocalAIAgent",
+              "version": 0,
+              "parameters": {},
+              "mapper": {
+                "defaultModel": "medium",
+                "tokenLimit": "50",
+                "promptCaching": "none",
+                "fallbackEnabled": false,
+                "systemPrompt": "Eres un analista de economia local para alumnos de Desarrollo Sustentable del TecNM en Mazatlan,\r\nSinaloa.\r\nRecibiras las respuestas de una encuesta, una por linea, con el formato: comida | ropa | apps |\r\ncriterio | origen | edad.\r\nUsa UNICAMENTE esas respuestas; no inventes datos.\r\nResponde en texto plano (sin asteriscos, sin markdown), en espanol, con este formato:\r\nTOTAL DE RESPUESTAS: [numero]\r\nRESULTADOS\r\nComida: [cada opcion con su porcentaje]\r\nRopa: [...]\r\nApps internacionales: [...]\r\nCriterio de compra: [...]\r\nConoce el origen: [...]\r\nANALISIS\r\n[4 lineas maximo: que tan local o global es el consumo de esta comunidad y que diferencias hay\r\npor edad]\r\nCONCLUSIONES\r\n1. [efecto en la economia local]\r\n2. [efecto ambiental por transporte y empaques]\n3. [una accion concreta para impulsar el consumo local]",
+                "message": "{{1.accion}}{{1.comida}}{{1.ropa}}{{1.apps}}{{1.criterio}}{{1.origen}}{{1.edad}}",
+                "files": [],
+                "threadId": "",
+                "modelConfig": {
+                  "recursionLimit": "300",
+                  "iterationsFromHistoryCount": "10",
+                  "timeout": "",
+                  "aiCompactionEnabled": true
+                },
+                "outputType": "text"
+              },
+              "metadata": {
+                "designer": {
+                  "x": 1200,
+                  "y": 150
+                },
+                "setupValidation": {
+                  "version": 1,
+                  "configuration": "c758834a9a4820bc",
+                  "result": {
+                    "valid": true,
+                    "fields": []
+                  }
+                },
+                "restore": {
+                  "parameters": {},
+                  "expect": {
+                    "defaultModel": {
+                      "mode": "chose",
+                      "label": "MediumModel: gpt-5-nano. Reasoning: low. A balanced, quick choice for clearly defined tasks needing reliable answers rather than deep analysis"
+                    },
+                    "promptCaching": {
+                      "label": "Automatic (always on)"
+                    },
+                    "files": {
+                      "mode": "chose"
+                    },
+                    "outputType": {
+                      "label": "Text"
+                    }
+                  }
+                },
+                "parameters": [
+                  {
+                    "name": "makeConnectionId",
+                    "type": "account:ai-provider,openai-gpt-3,anthropic-claude,gemini-ai-q9zyjp,ai-agent-foundry-openai,ai-agent-foundry-non-openai,mistral-ai,cohere,groq,ai-agent-xai,amazon-bedrock,ai-agent-openai-compatible",
+                    "label": "Connection",
+                    "required": true
+                  }
+                ],
+                "expect": [
+                  {
+                    "name": "defaultModel",
+                    "type": "select",
+                    "label": "Model",
+                    "required": true
+                  },
+                  {
+                    "name": "tokenLimit",
+                    "type": "number",
+                    "label": "Maximum output length (%)",
+                    "validate": {
+                      "min": 20,
+                      "max": 100
+                    }
+                  },
+                  {
+                    "name": "promptCaching",
+                    "type": "select",
+                    "label": "Prompt caching",
+                    "validate": {
+                      "enum": [
+                        "none"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "fallbackEnabled",
+                    "type": "boolean",
+                    "label": "Enable fallback connection",
+                    "required": true
+                  },
+                  {
+                    "name": "systemPrompt",
+                    "type": "text",
+                    "label": "Instructions"
+                  },
+                  {
+                    "name": "message",
+                    "type": "text",
+                    "label": "Input",
+                    "required": true
+                  },
+                  {
+                    "name": "files",
+                    "type": "array",
+                    "label": "Input files",
+                    "spec": [
+                      {
+                        "name": "fileName",
+                        "type": "filename",
+                        "label": "File name",
+                        "semantic": "file:name"
+                      },
+                      {
+                        "name": "data",
+                        "type": "buffer",
+                        "label": "Data",
+                        "semantic": "file:data"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "threadId",
+                    "type": "text",
+                    "label": "Conversation ID",
+                    "validate": {
+                      "max": 256
+                    }
+                  },
+                  {
+                    "name": "modelConfig",
+                    "type": "collection",
+                    "label": "Model configuration",
+                    "spec": [
+                      {
+                        "name": "recursionLimit",
+                        "type": "number",
+                        "label": "Steps per agent call"
+                      },
+                      {
+                        "name": "iterationsFromHistoryCount",
+                        "type": "number",
+                        "label": "Maximum conversation history"
+                      },
+                      {
+                        "name": "timeout",
+                        "type": "number",
+                        "label": "Step timeout",
+                        "validate": {
+                          "min": 120,
+                          "max": 600
+                        }
+                      },
+                      {
+                        "name": "aiCompactionEnabled",
+                        "type": "boolean",
+                        "label": "Enable compaction",
+                        "required": true
+                      }
+                    ]
+                  },
+                  {
+                    "name": "outputType",
+                    "type": "select",
+                    "label": "Response format",
+                    "required": true,
+                    "validate": {
+                      "enum": [
+                        "text",
+                        "make-schema",
+                        "udt-schema"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "tools": []
+            },
+            {
+              "id": 9,
+              "module": "gateway:WebhookRespond",
+              "version": 1,
+              "parameters": {},
+              "mapper": {
+                "status": "200",
+                "body": "{{8.response}}",
+                "headers": []
+              },
+              "metadata": {
+                "designer": {
+                  "x": 1500,
+                  "y": 150
+                },
+                "setupValidation": {
+                  "version": 1,
+                  "configuration": "b49d925869f05b32",
+                  "result": {
+                    "valid": true,
+                    "fields": []
+                  }
+                },
+                "restore": {
+                  "expect": {
+                    "headers": {
+                      "mode": "chose"
+                    }
+                  }
+                },
+                "expect": [
+                  {
+                    "name": "status",
+                    "type": "uinteger",
+                    "label": "Status",
+                    "validate": {
+                      "min": 100
+                    },
+                    "required": true
+                  },
+                  {
+                    "name": "body",
+                    "type": "any",
+                    "label": "Body"
+                  },
+                  {
+                    "name": "headers",
+                    "type": "array",
+                    "label": "Custom headers",
+                    "validate": {
+                      "maxItems": 16
+                    },
+                    "spec": [
+                      {
+                        "name": "key",
+                        "label": "Key",
+                        "type": "text",
+                        "required": true,
+                        "validate": {
+                          "max": 256
+                        }
+                      },
+                      {
+                        "name": "value",
+                        "label": "Value",
+                        "type": "text",
+                        "required": true,
+                        "validate": {
+                          "max": 4096
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "instant": true,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "slots": null,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false,
+      "freshVariables": false
+    },
+    "designer": {
+      "orphans": []
+    },
+    "zone": "us2.make.com",
+    "notes": []
+  }
+}
