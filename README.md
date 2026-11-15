@@ -39,7 +39,9 @@ Para utilizar el proyecto:
 El blueprint publicado conserva la lógica exportada y se desvinculó de la hoja de cálculo y las conexiones originales. El reporte técnico documenta los ajustes pendientes para usarlo.
 
 ## Video del funcionamiento
-[Ver demostración sin audio](video/Local_Global_sin_audio.mp4)
+[![Ver video del funcionamiento](https://img.youtube.com/vi/ByCzI9FGAqk/hqdefault.jpg)](https://youtu.be/ByCzI9FGAqk)
+
+[Ver en YouTube](https://youtu.be/ByCzI9FGAqk) · [Video sin audio en el repositorio](video/Local_Global_sin_audio.mp4)
 
 ## Imágenes
 Captura del flujo de la encuesta en Make:
